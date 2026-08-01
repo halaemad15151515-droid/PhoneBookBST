@@ -1,1 +1,175 @@
+package phonebook;
 
+class PhoneBookBST {
+
+    private Node root;
+    private int size;
+
+    public PhoneBookBST() {
+        root = null;
+        size = 0;
+    }
+
+    public void insert(Contact contact) {
+        root = insertRec(root, contact);
+    }
+
+    private Node insertRec(Node root, Contact contact) {
+
+        if (root == null) {
+            size++;
+            return new Node(contact);
+        }
+
+        if (contact.personName.compareToIgnoreCase(root.data.personName) < 0) {
+            root.left = insertRec(root.left, contact);
+        }
+
+        else if (contact.personName.compareToIgnoreCase(root.data.personName) > 0) {
+            root.right = insertRec(root.right, contact);
+        }
+
+        else {
+            System.out.println("Contact already exists!");
+        }
+
+        return root;
+    }
+
+    private Node searchRec(Node root, String name) {
+
+        if (root == null || root.data.personName.equalsIgnoreCase(name))
+            return root;
+
+        if (name.compareToIgnoreCase(root.data.personName) < 0)
+            return searchRec(root.left, name);
+        else
+            return searchRec(root.right, name);
+    }
+
+    public void search(String name) {
+
+        Node result = searchRec(root, name);
+
+        if (result != null) {
+            System.out.println("Found: " + result.data.personName +
+                    " - " + result.data.phoneNumber);
+        } else {
+            System.out.println("Not found!");
+        }
+    }
+
+    public void updateExistingOne(String name, String newPhone) {
+
+        Node result = searchRec(root, name);
+
+        if (result != null) {
+            result.data.phoneNumber = newPhone;
+            System.out.println("Phone updated successfully.");
+            System.out.println("Complexity: O(log n)");
+        } else {
+            System.out.println("Contact not found!");
+        }
+    }
+
+    public void display() {
+
+        if (root == null) {
+            System.out.println("Phonebook is empty!");
+        } else {
+            displayRec(root);
+        }
+    }
+
+    private void displayRec(Node root) {
+
+        if (root != null) {
+
+            displayRec(root.left);
+
+            System.out.println(root.data.personName +
+                    " - " + root.data.phoneNumber);
+
+            displayRec(root.right);
+        }
+    }
+
+    public void display0100() {
+
+        if (root == null) {
+            System.out.println("Phonebook is empty!");
+        } else {
+            System.out.println("Contacts starting with 0100:");
+            display0100Rec(root);
+        }
+    }
+
+    private void display0100Rec(Node root) {
+
+        if (root != null) {
+
+            display0100Rec(root.left);
+
+            if (root.data.phoneNumber.startsWith("0100")) {
+                System.out.println(root.data.personName +
+                        " - " + root.data.phoneNumber);
+            }
+
+            display0100Rec(root.right);
+        }
+    }
+
+    public void remove(String name) {
+        root = removeRec(root, name);
+    }
+
+    private Node removeRec(Node root, String name) {
+
+        if (root == null) {
+            System.out.println("Contact not found!");
+            return null;
+        }
+
+        if (name.compareToIgnoreCase(root.data.personName) < 0) {
+            root.left = removeRec(root.left, name);
+        }
+
+        else if (name.compareToIgnoreCase(root.data.personName) > 0) {
+            root.right = removeRec(root.right, name);
+        }
+
+        else {
+
+            size--;
+
+            if (root.left == null)
+                return root.right;
+
+            else if (root.right == null)
+                return root.left;
+
+            Node minNode = findMin(root.right);
+
+            root.data = minNode.data;
+
+            root.right = removeRec(root.right, minNode.data.personName);
+
+            System.out.println("Contact removed successfully.");
+        }
+
+        return root;
+    }
+
+    private Node findMin(Node root) {
+
+        while (root.left != null) {
+            root = root.left;
+        }
+
+        return root;
+    }
+
+    public int size() {
+        return size;
+    }
+}
