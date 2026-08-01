@@ -1,0 +1,113 @@
+package phonebook;
+
+import java.util.Scanner;
+
+public class MainLL {
+
+    public static void main(String[] args) {
+
+        try (Scanner input = new Scanner(System.in)) {
+            PhoneBookLinkedList phonebook = new PhoneBookLinkedList();
+            
+            int choice;
+            
+            do {
+                
+                System.out.println("\n===== LINKED LIST PHONEBOOK =====");
+                
+                System.out.println("1- Insert");
+                System.out.println("2- Search");
+                System.out.println("3- Remove");
+                System.out.println("4- Update");
+                System.out.println("5- Display All");
+                System.out.println("6- Display 0100 Contacts");
+                System.out.println("7- Size");
+                System.out.println("0- Exit");
+                
+                System.out.print("Choice: ");
+                
+                choice = input.nextInt();
+                
+                input.nextLine();
+                
+                switch (choice) {
+                    
+                    case 1:
+                        
+                        System.out.print("Name: ");
+                        String name = input.nextLine();
+                        
+                        System.out.print("Phone: ");
+                        String phone = input.nextLine();
+                        
+                        phonebook.insert(new Contact(name, phone));
+                        
+                        break;
+                        
+                    case 2:
+                        
+                        System.out.print("Search Name: ");
+                        
+                        name = input.nextLine();
+                        
+                        phonebook.search(name);
+                        
+                        break;
+                        
+                    case 3:
+                        
+                        System.out.print("Remove Name: ");
+                        
+                        name = input.nextLine();
+                        
+                        phonebook.remove(name);
+                        
+                        break;
+                        
+                    case 4:
+                        
+                        System.out.print("Name: ");
+                        
+                        name = input.nextLine();
+                        
+                        System.out.print("New Phone: ");
+                        
+                        phone = input.nextLine();
+                        
+                        phonebook.updateExistingOne(name, phone);
+                        
+                        break;
+                        
+                    case 5:
+                        
+                        phonebook.display();
+                        
+                        break;
+                        
+                    case 6:
+                        
+                        phonebook.display0100();
+                        
+                        break;
+                        
+                    case 7:
+                        
+                        System.out.println("Size = " + phonebook.size());
+                        
+                        break;
+                        
+                    case 0:
+                        
+                        System.out.println("Program ended.");
+                        
+                        break;
+                        
+                    default:
+                        
+                        System.out.println("Invalid choice!");
+                }
+                
+            } while (choice != 0);
+        }
+    }
+}
