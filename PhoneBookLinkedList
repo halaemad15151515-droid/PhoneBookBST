@@ -1,0 +1,180 @@
+package phonebook;
+
+public class PhoneBookLinkedList {
+
+    private LLNode head;
+    private int size;
+
+    public PhoneBookLinkedList() {
+        head = null;
+        size = 0;
+    }
+
+    public void insert(Contact contact) {
+
+        LLNode newNode = new LLNode(contact);
+
+        if (head == null ||
+                contact.personName.compareToIgnoreCase(head.data.personName) < 0) {
+
+            newNode.next = head;
+            head = newNode;
+            size++;
+
+            System.out.println("Contact added.");
+            return;
+        }
+
+        LLNode current = head;
+
+        while (current.next != null &&
+                current.next.data.personName.compareToIgnoreCase(contact.personName) < 0) {
+
+            current = current.next;
+        }
+
+        if (current.data.personName.equalsIgnoreCase(contact.personName)) {
+            System.out.println("Contact already exists!");
+            return;
+        }
+
+        newNode.next = current.next;
+        current.next = newNode;
+
+        size++;
+
+        System.out.println("Contact added.");
+    }
+
+    public void search(String name) {
+
+        LLNode current = head;
+
+        while (current != null) {
+
+            if (current.data.personName.equalsIgnoreCase(name)) {
+
+                System.out.println("Found: " +
+                        current.data.personName +
+                        " - " +
+                        current.data.phoneNumber);
+
+                return;
+            }
+
+            current = current.next;
+        }
+
+        System.out.println("Contact not found!");
+    }
+
+    public void updateExistingOne(String name, String newPhone) {
+
+        LLNode current = head;
+
+        while (current != null) {
+
+            if (current.data.personName.equalsIgnoreCase(name)) {
+
+                current.data.phoneNumber = newPhone;
+
+                System.out.println("Phone updated successfully.");
+                System.out.println("Complexity: O(n)");
+
+                return;
+            }
+
+            current = current.next;
+        }
+
+        System.out.println("Contact not found!");
+    }
+
+    public void remove(String name) {
+
+        if (head == null) {
+            System.out.println("Phonebook is empty!");
+            return;
+        }
+
+        if (head.data.personName.equalsIgnoreCase(name)) {
+
+            head = head.next;
+
+            size--;
+
+            System.out.println("Contact removed.");
+            return;
+        }
+
+        LLNode current = head;
+
+        while (current.next != null &&
+                !current.next.data.personName.equalsIgnoreCase(name)) {
+
+            current = current.next;
+        }
+
+        if (current.next == null) {
+
+            System.out.println("Contact not found!");
+
+        } else {
+
+            current.next = current.next.next;
+
+            size--;
+
+            System.out.println("Contact removed.");
+        }
+    }
+
+    public void display() {
+
+        if (head == null) {
+
+            System.out.println("Phonebook is empty!");
+            return;
+        }
+
+        LLNode current = head;
+
+        while (current != null) {
+
+            System.out.println(current.data.personName +
+                    " - " +
+                    current.data.phoneNumber);
+
+            current = current.next;
+        }
+    }
+
+    public void display0100() {
+
+        if (head == null) {
+
+            System.out.println("Phonebook is empty!");
+            return;
+        }
+
+        System.out.println("Contacts starting with 0100:");
+
+        LLNode current = head;
+
+        while (current != null) {
+
+            if (current.data.phoneNumber.startsWith("0100")) {
+
+                System.out.println(current.data.personName +
+                        " - " +
+                        current.data.phoneNumber);
+            }
+
+            current = current.next;
+        }
+    }
+
+    public int size() {
+        return size;
+    }
+}
